@@ -1,34 +1,35 @@
-Constcache_NAME='任务-时钟-v1';
-ConsturlsToCache=[
+const CACHE_NAME = 'pwa-clock-v1';
+const urlsToCache = [
   './',
   './index.html',
   './manifest.json'
 ];
 
-自己.addEventListener('安装', 事件=>{
-  事件.waituntil(
-    缓存.打开(cache_NAME)
-      .然后(缓存=>缓存.addAll(urlsToCache))
-      .然后(()=>自己.skipwaiting())
+// 安装：缓存文件
+self.addEventListener('install', event => {
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then(cache => cache.addAll(urlsToCache))
+      .then(() => self.skipWaiting())
   );
 });
 
-自己.addEventListener('激活', 事件=>{
-  事件.waituntil(
-    缓存.键().然后(cacheNames=>{
-      返回 承诺.所有(
-        cacheNames.过滤器(姓名=>姓名!==cache_NAME)
-          .地图(姓名=>缓存.删除(姓名))
-      );
-    }).然后(()=>自己.客户.声称())
+// 激活：清理旧缓存
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.filter(name => name !== CACHE_NAME)
+          .map(name => caches.delete(name))
+      )
+    }).then(() => self.clients.claim())
   );
 });
 
-自己.addEventListener('获取', 事件=>{
-  事件.responseWith(
-    缓存.匹配(事件.请求)
-      .然后(响应=>{
-        返回 响应||取来(事件.请求);
-      })
+// 请求拦截，优先读缓存
+self.addEventListener('fetch', event => {
+  event.respondWith(
+    caches.match(event.request)
+      .then(res => res || fetch(event.request))
   );
 });
