@@ -1,15 +1,15 @@
 {
-  "名称"："任务打卡单机版",
-  "短名称": "打卡计时",
+  "name": "任务打卡单机版",
+  "short_name": "打卡计时",
   "start_url": "./index.html",
-  "显示": "独立",
+  "display": "standalone",
   "background_color": "#f3f4f6",
-  "主题_颜色": "#2563eb",
-  "图标": [
+  "theme_color": "#2563eb",
+  "icons": [
     {
-      "src": "https://cdn-icons-png.flaticon.com/512/2926/2926675.png",
-      "大小": "512x512",
-      "类型": "图像/png"
+      "src": "https://cdn-icons-png.flaticon.com/512/4727/4727266.png",
+      "sizes": "512x512",
+      "type": "image/png"
     }
   ]
 }
