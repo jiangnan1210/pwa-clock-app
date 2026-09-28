@@ -1,1 +1,119 @@
-#pwa-时钟-应用程序
+<！doctype 超文本标记语言>
+<超文本标记语言 朗="zh-CN">
+<头>
+    <元 字符集="UTF-8">
+    <元 姓名="视口" 内容="宽度=设备宽度，初始比例=1.0">
+    <标题>任务打卡单机版</标题>
+    <链接 rel="清单" href="manifest.json">
+    <元 姓名="主题-颜色" 内容="#2563eb">
+    <风格>
+*{边缘：0；填充：0；箱体尺寸：边框框；字体系列：system-ui}
+身体{背景：#f3f4f6；填充：16PX；颜色：#1f2937}
+.卡片{背景：#FFF；边界半径：14px；填充：16px；底边距：12px；箱形阴影：01PX3PX#0002}
+H1{字体大小：22px；底边距：16px；文本对齐：中心}
+.任务项{显示：弯曲；justify-content：间距；对齐项目：中心；填充：10PX；下边框：#eee固体1PX}
+.任务名称{字体大小：16px}
+.时间文本{颜色：#2563eb；字体粗细：大胆的}
+按钮{填充：8px12px；边境：没有一个；边界半径：8PX；背景：#2563eb；颜色：#FFF；字体大小：14px}
+按钮.停止{背景：#dc2626}
+.添加区域{显示：弯曲；差距：8PX；边缘：16px0}
+输入{弯曲：1；填充：10px；边界：1PX#ddd固体；边界半径：8px；字体大小：16px}
+.出口区{上边距：20px；显示：弯曲；差距：8px}
+    </风格>
+</头>
+<身体>
+    <H1>任务打卡单机版</H1>
+    <div 班级="添加区域">
+        <输入 身份标识="taskInput" 占位符="输入任务名称">
+        <按钮 onClick="addTask()">新增任务</按钮>
+    </div>
+    <div 身份标识="任务列表"></div>
+    <div 班级="出口区域">
+        <按钮 onClick="BackupData()">备份数据</按钮>
+        <按钮 onClick="clearAll()">清空全部</按钮>
+    </div>
+
+    <脚本>
+让tasklist=JSON。解析(localStorage.getItem('任务'))||[]；
+计时器={}；
+
+功能savedata(){
+localStorage.setItem('任务'，JSON.使字符串化(任务清单))；
+        }
+
+功能 提供(){
+Const包=文件.getElementById('任务列表')；
+包.innerHTML="；
+tasklist.foreach((任务，IDX)=>{
+Constdiv=文件.createElement('div')；
+div.className="卡片任务-项目"；
+div.innerHTML='
+<div>
+<div 班级="任务名称">${任务.姓名}</div>
+<div 班级="时间文本">${formatTime(任务.秒)}</div>
+</div>
+<div>
+<按钮 onClick="startTimer(${IDX})">开始</按钮>
+<按钮 班级="停止"onClick="stopTimer(${IDX})">停止</按钮>
+<按钮 onClick="delTask(${IDX})">删除</按钮>
+</div>
+`;
+包.appendChild(div)；
+            })
+        }
+
+功能formatTime(s){
+让h=数学.底板(s/3600)；
+转让=数学.底板((s%3600)/60)；
+转让=数学.底板((s%3600)/60)；
+！doctype
+}
+
+函数addTask(){
+常数名称=文件.getElementById('taskInput')。价值.修剪()；
+如果(! 姓名) 返回;
+任务列表。 推({姓名，秒：0})；
+文件.getElementById('taskInput')。价值=”；
+savedata()；render()；
+}
+
+函数startTimer(IDX){功能startTimer(IDX){
+如果(计时器[IDX])返回；如果(计时器[IDX])返回；
+计时器[IDX]=setInterval(()=>{计时器[IDX]=setInterval(()=>{
+tasklist[IDX].秒+=1；任务列表[IDX].秒+=1；
+savedata()；渲染；渲染)；保存数据()；提供()；
+},1000)
+}
+函数stopTimer(IDX){功能stopTimer(IDX){
+clearInterval(计时器[IDX])；clearInterval(计时器[IDX])；
+计时器[IDX]=无效的；计时器[IDX]=无效的；
+}
+函数delTask(IDX){功能delTask(IDX){
+stopTimer(IDX)；
+任务列表.拼接(IDX，1)；
+savedata()；渲染()；保存数据()；提供()；
+}
+函数BackupData(){功能BackupData(){
+Const数据=JSON。使字符串化(tasklist，null，2)；常数数据=JSON.使字符串化(任务列表，无效的，2)；
+常量blob=新blob([数据]，{类型：'应用程序/约翰逊})；常数斑点=新的斑点([数据],{类型:'应用程序/约翰逊});
+常量URL=URL.createObjectURL(斑点)；常数URL=URL.createObjectURL(斑点)；
+Const一个=文件.createElement('A')；常数一个=文件.createElement('A')；
+一个.href=URL；a.下载="打卡备份.JSON""；a.click()；a.href=url；a.download="打卡备份.JSON""；a.click()；
+revokeObjectURL(URL)；URL。revokeObjectURL(URL)；
+}
+函数clearAll(){功能clearAll(){
+如果(确认('确定清空所有任务和时长？')){如果(确认('确定清空所有任务和时长？')){
+tasklist=[]；任务列表=[]；
+对象。值(计时器).foreach(t=>clearInterval(t))；对象.值(计时器).foreach(t=>clearInterval(t))；
+计时器={}；计时器={};
+savedata()；渲染()；保存数据()；提供()；
+}
+}
+
+如果(导航器中的"ServiceWorker"){如果('serviceWorker'在……内领航员){
+领航员.ServiceWorker。注册(‘sw.js’)；导航器.ServiceWorker。注册(‘sw.js’)；
+}
+提供()；渲染();
+</剧本>
+</身体>
+</超文本标记语言>
